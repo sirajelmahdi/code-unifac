@@ -54,13 +54,13 @@ end
 
 
 if i==3
-somab=to(i-1,1)*teta(i-2,1)+to(i+1,1)*teta(i-1,1)
+somab=to(i-1,1)*teta(i-2,1)+to(i+1,1)
 tetaab=to(i-1,1)*teta(i-2,1)/somab;
 tetabb=to(i+1,1)*teta(i-1,1)/somab;
 end
 
 if i==4
-somba=to(i-3,1)*teta(i-3,1)+to(i-1,1)*teta(i-2,1)
+somba=to(i-3,1)+to(i-1,1)*teta(i-2,1)
 tetaba=to(i-1,1)*teta(i-2,1)/somba;
 tetaaa=(to(i-3,1)*teta(i-3,1))/somba
 end
@@ -69,7 +69,9 @@ end
  text   =     'le 11 cest le solute a '; 
  text1  =     'le 12 cest ab ';
  text2  =     'le 21 cest ba ';
- text3  =     'le 22 cest le solvant b';    
+ text3  =     'le 22 cest le solvant b'; 
+ a12=A(2,1);
+ a21=A(3,1);
 disp(text);disp(text1);disp(text2);disp(text3);
 %partie de calcule du coeffcient de 1 er itteration ou A12 =A21=1
 part1=(x(2,1)*log(D0(1,1)))+(x(1,1)*(D0(2,1)))+2*((x(1,1)*log((x(1,1)/phiie(1,1))))+x(2,1)*log(x(2,1)/phiie(2,1)));
@@ -77,19 +79,21 @@ part2=2*x(2,1)*x(1,1)*(((phiie(1,1)/x(1,1))*(1-(lamda(1,1)/lamda(2,1))))+((phiie
 part3=x(2,1)*q(1,1)*(((1-tetaba^2)*log(to(3,1))+(1-tetabb^2)*log(to(2,1))));
 part4=x(1,1)*q(2,1)*(((1-tetaab^2)*log(to(2,1))+(1-tetaaa^2)*log(to(3,1))));
 coefdiffth=exp(part1+part2+part3+part4)
-k=1;;ind=0;inds=0;
-A(1,1)=1;
-A(2,1)=1;
-A(3,1)=1;
-A(4,1)=1;
-A(5,1)=1;
-A(6,1)=1;
-A(7,1)=1;
-A(8,1)=1;
+coef00=coefdiffth
+k=1;ind=0;inds=0;
+A(1,1)=a12;
+A(2,1)=a21;
+A(3,1)=a12;
+A(4,1)=a21;
+A(5,1)=a12;
+A(6,1)=a21;
+A(7,1)=a12;
+A(8,1)=a21;
+delta=1;j=0;
 %code specefique au cas du coeff exper inferieur du celle calculer en
 %premiere itteration ===>pour avoir convergence
    if coefdiffth > coeffexp
-        while coefdiffth-coeffexp < 0.0009 & delta == 1
+        while coefdiffth-coeffexp ~= 0 & delta == 1
             %code specif du variation de a12 et a21 en 4 variation
             A(1,1)=A(1,1)-0.1;%le cas a12 -0.1
             A(2,1)=A(2,1)-0.1;%le cas a21 -0.1
@@ -158,7 +162,7 @@ A(8,1)=1;
    %le meme  algorithme et raisonnement pour le cas ou le coefficient
    %experimentale est superieure coef theo 0
     if coefdiffth < coeffexp
-        while coefdiffth-coeffexp < 0.0009 & delta == 1
+        while coefdiffth-coeffexp ~= 0 & delta == 1
             A(1,1)=A(1,1)-0.1;
             A(2,1)=A(2,1)-0.1;
             A(3,1)=A(3,1)+0.1;
@@ -218,24 +222,24 @@ A(8,1)=1;
   for i = 1:k
       for e=1:7
       if coefdiffth==inc(i,e)
-          col=i
-          lin=e
+          lin=i
+          col=e
       end
       end
   end
   %determination du A12 et A21 apartir des tableau du localisation
-  Aab=indab(col,lin)
-  Aba=indba(col,lin)
+  Aab=indab(lin,col)
+  Aba=indba(lin,col)
   
   
    %verification 
-        abto(6,1)=exp(-Aab/temp);
-        bato(6,1)=exp(-Aba/temp);
-        abteta(6,1)=teta(1,1)*abto(6,1)/(teta(1,1)*abto(6,1)+teta(2,1));
-        bateta(6,1)=teta(2,1)*bato(6,1)/(teta(2,1)*bato(6,1)+teta(1,1));
-        aateta(6,1)=teta(1,1)/(teta(1,1)+teta(2,1)*bato(6,1));
-        bbteta(6,1)=teta(2,1)/(teta(2,1)+teta(1,1)*abto(6,1));
-        part(1,1)=x(2,1)*q(1,1)*((1-bateta(6,1)^2)*log(bato(6,1))+(1-bbteta(6,1)^2)*abto(6,1)*log(abto(6,1)));
-        part(2,1)=x(1,1)*q(2,1)*((1-abteta(6,1)^2)*log(abto(6,1))+(1-aateta(6,1)^2)*bato(6,1)*log(bato(6,1)));
+        abto(8,1)=exp(-Aab/temp);
+        bato(8,1)=exp(-Aba/temp);
+        abteta(8,1)=teta(1,1)*abto(8,1)/(teta(1,1)*abto(8,1)+teta(2,1));
+        bateta(8,1)=teta(2,1)*bato(8,1)/(teta(2,1)*bato(8,1)+teta(1,1));
+        aateta(8,1)=teta(1,1)/(teta(1,1)+teta(2,1)*bato(8,1));
+        bbteta(8,1)=teta(2,1)/(teta(2,1)+teta(1,1)*abto(8,1));
+        part(1,1)=x(2,1)*q(1,1)*((1-bateta(8,1)^2)*log(bato(8,1))+(1-bbteta(8,1)^2)*abto(8,1)*log(abto(8,1)));
+        part(2,1)=x(1,1)*q(2,1)*((1-abteta(8,1)^2)*log(abto(8,1))+(1-aateta(8,1)^2)*bato(8,1)*log(bato(8,1)));
         verf=exp(part(1,1)+part(2,1)+part1+part2)
  
