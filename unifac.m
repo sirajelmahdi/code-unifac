@@ -1,9 +1,11 @@
 %variable definition et calcul des parametre 
+% pas la peine de faire nb , car dévlop du corrélation UNIFAC qu on a fait c est pour 2 elements
 nb=input('entrer le nombre d elemnet ');
 temp=input('entrer la temperature');
 coeffexp=input('entrer la valeur de coeff diffusion experimental ');
 sommteta=0;
 sommephi=0;
+%explique moi cette partie !
 for i=1:(nb^2)
    if i<=nb 
        if i==1
@@ -241,5 +243,6 @@ delta=1;j=0;
         bbteta(8,1)=teta(2,1)/(teta(2,1)+teta(1,1)*abto(8,1));
         part(1,1)=x(2,1)*q(1,1)*((1-bateta(8,1)^2)*log(bato(8,1))+(1-bbteta(8,1)^2)*abto(8,1)*log(abto(8,1)));
         part(2,1)=x(1,1)*q(2,1)*((1-abteta(8,1)^2)*log(abto(8,1))+(1-aateta(8,1)^2)*bato(8,1)*log(bato(8,1)));
+        %c est comparaison entre théorique et exp?
         verf=exp(part(1,1)+part(2,1)+part1+part2)
  
